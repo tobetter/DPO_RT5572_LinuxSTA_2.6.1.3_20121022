@@ -27,7 +27,7 @@ include $(RT28xx_DIR)/os/linux/config.mk
 RTMP_SRC_DIR = $(RT28xx_DIR)/RT$(MODULE)
 
 #PLATFORM: Target platform
-PLATFORM = PC
+#PLATFORM = PC
 #PLATFORM = 5VT
 #PLATFORM = IKANOS_V160
 #PLATFORM = IKANOS_V180
@@ -63,6 +63,7 @@ PLATFORM = PC
 #PLATFORM = UBICOM_IPX8
 #PLATFORM = INTELP6
 #PLATFORM = MSTAR
+PLATFORM = ODROIDC
 
 #APSOC
 ifeq ($(MODULE),3050)
@@ -307,6 +308,11 @@ LINUX_SRC_MODULE = /opt/yuksel/Thorium/Linux_Mboot/RedLion/2.6.28.9/drivers/net/
 CROSS_COMPILE = /opt/mstar/mips-4.3/bin/mips-linux-gnu-
 endif
 
+ifeq ($(PLATFORM),ODROIDC)
+LINUX_SRC = ../linux
+CROSS_COMPILE = arm-linux-gnueabihf-
+endif
+
 export OSABL RT28xx_DIR RT28xx_MODE LINUX_SRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE RTMP_SRC_DIR LINUX_SRC_MODULE TARGET HAS_WOW_SUPPORT HAS_SWITCH_CHANNEL_OFFLOAD
 
 # The targets that may be used.
@@ -354,6 +360,7 @@ ifeq ($(OSABL),YES)
 	$(MAKE) -C $(RT28xx_DIR)/os/linux/
 endif
 
+ifneq ($(PLATFORM),ODROIDC)
 ifeq ($(RT28xx_MODE),AP)
 	cp -f $(RT28xx_DIR)/os/linux/rt$(MODULE)ap.o /tftpboot
 ifeq ($(OSABL),YES)
@@ -378,6 +385,7 @@ ifeq ($(OSABL),YES)
 endif
 endif	
 endif	
+endif
 else
 
 ifeq ($(OSABL),YES)
@@ -396,6 +404,7 @@ else
 endif
 endif
 
+ifneq ($(PLATFORM),ODROIDC)
 ifeq ($(OSABL),YES)
 	cp -f os/linux/Makefile.6.netif $(RT28xx_DIR)/os/linux/Makefile
 	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
@@ -421,6 +430,7 @@ else
 ifeq ($(OSABL),YES)
 	cp -f $(RT28xx_DIR)/os/linux/rtutil$(MODULE)sta.ko /tftpboot
 	cp -f $(RT28xx_DIR)/os/linux/rtnet$(MODULE)sta.ko /tftpboot
+endif
 endif
 endif
 endif

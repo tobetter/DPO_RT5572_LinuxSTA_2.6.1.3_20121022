@@ -1051,3 +1051,7 @@ ifeq ($(PLATFORM),RALINK_3352)
 CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include/asm-mips/mach-generic -I$(LINUX_SRC)/include -I$(RT28xx_DIR)/include -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -G 0 -mno-abicalls -fno-pic -pipe  -finline-limit=100000 -march=mips2 -mabi=32 -Wa,--trap -DLINUX -nostdinc -iwithprefix include $(WFLAGS)
 export CFLAGS
 endif
+
+ifeq ($(PLATFORM),ODROIDC)
+EXTRA_CFLAGS := $(WFLAGS) -I$(RT28xx_DIR)/include -Wno-error=format= -Wno-error=parentheses -Wno-error=undef -DPLATFORM_ODROIDC
+endif
